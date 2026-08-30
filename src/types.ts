@@ -2,6 +2,14 @@ export type Severity = "critical" | "high" | "medium" | "low";
 export type RiskPosture = "ALLOW" | "OBSERVE" | "RESTRICT" | "QUARANTINE" | "HUMAN_APPROVAL";
 export type EngineId = "S1" | "S2" | "S3" | "S4" | "S5" | "S6";
 export type AuditPhase = "DISCOVER" | "MODEL" | "AUDIT" | "TRIAGE" | "REVERIFY" | "PATCH" | "TEST" | "BLAST_RADIUS" | "ADVERSARIAL" | "COMMIT" | "REAUDIT" | "CLOSURE" | "CLOSED";
+export type CapabilityExposure = "active" | "latent" | "capability-triggered" | "structural";
+
+export interface CapabilityAssumption {
+  dimension: "reasoning" | "planning-horizon" | "context" | "memory" | "tool-use" | "coordination" | "network" | "tool-scope" | "other";
+  current: string;
+  future: string;
+  securityDependsOnCurrentLimit: boolean;
+}
 
 export interface EvidenceRef {
   kind: "source" | "test" | "runtime" | "tool" | "receipt";
@@ -21,6 +29,8 @@ export interface Finding {
   evidence: EvidenceRef[];
   affectedSurfaces: string[];
   status: "candidate" | "confirmed" | "fixed" | "deferred" | "rejected";
+  capabilityExposure?: CapabilityExposure;
+  capabilityAssumptions?: CapabilityAssumption[];
 }
 
 export interface Invariant {
@@ -41,6 +51,7 @@ export interface AuditContext {
   invariants: Invariant[];
   findings: Finding[];
   changedSymbols: string[];
+  capabilityEnvelope?: CapabilityAssumption[];
 }
 
 export interface EngineResult {
@@ -64,6 +75,7 @@ export interface ReviewerRequest {
   surfaces: string[];
   invariants: Invariant[];
   forbiddenActions: string[];
+  capabilityEnvelope?: CapabilityAssumption[];
 }
 
 export interface ReviewerResult {
