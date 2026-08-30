@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentropolis.dev/sentinel-6/schemas/finding.schema.json",
+  "title": "SentinelFinding",
+  "type": "object",
+  "required": ["finding_id", "severity", "confidence", "surface", "evidence", "status"],
+  "properties": {
+    "finding_id": { "type": "string", "minLength": 1 },
+    "severity": { "enum": ["critical", "high", "medium", "low"] },
+    "confidence": { "enum": ["high", "medium", "low"] },
+    "status": { "enum": ["CONFIRMED", "FIXED", "FIXED_WITH_CAVEAT", "DEFERRED_WITH_REASON", "REJECTED_AFTER_REVERIFICATION"] },
+    "surface": {
+      "type": "object",
+      "required": ["repository", "file", "symbol"],
+      "properties": {
+        "repository": { "type": "string" },
+        "file": { "type": "string" },
+        "lines": { "type": "string" },
+        "symbol": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["expected", "observed"],
+      "properties": {
+        "executable_path": { "type": "string" },
+        "reproduction": { "type": "array", "items": { "type": "string" } },
+        "expected": { "type": "string" },
+        "observed": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "invariant_id": { "type": ["string", "null"] },
+    "live_exposure": { "type": "string" },
+    "triggerability": { "type": "string" },
+    "blast_radius": {
+      "type": "object",
+      "properties": {
+        "producers": { "type": "array", "items": { "type": "string" } },
+        "callers": { "type": "array", "items": { "type": "string" } },
+        "consumers": { "type": "array", "items": { "type": "string" } },
+        "serializers": { "type": "array", "items": { "type": "string" } },
+        "tests": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "commit": { "type": ["string", "null"] },
+    "deferred_reason": { "type": ["string", "null"] }
+  },
+  "additionalProperties": false
+}
