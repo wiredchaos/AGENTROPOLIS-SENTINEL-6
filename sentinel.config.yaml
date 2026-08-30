@@ -1,5 +1,5 @@
 sentinel:
-  version: "0.3.0"
+  version: "0.4.0"
   mode: closed-loop
   commander: hermes
   source_of_truth: evidence
@@ -19,7 +19,7 @@ engines:
     role: custody-authority-accounting
   pressure:
     id: S5
-    role: concurrency-failure-recovery
+    role: concurrency-failure-recovery-future-capability
   closure:
     id: S6
     role: coverage-and-stop-authority
@@ -37,12 +37,7 @@ governance:
   aegis_feedback:
     enabled: true
     input: evidence-backed-findings
-    permitted_postures:
-      - allow
-      - observe
-      - restrict
-      - quarantine
-      - require-human-approval
+    permitted_postures: [allow, observe, restrict, quarantine, require-human-approval]
     automatic_relaxation: false
     human_override: mission-control
 
@@ -55,6 +50,26 @@ model_policy:
   allow_static_analyzers: true
   allow_mcp_tools: true
   critical_high_cross_review: true
+  current_model_incompetence_is_security_boundary: false
+
+future_capability_envelope:
+  enabled: true
+  principle: "Do not rely on current model incompetence as a security boundary."
+  classifications: [active, latent, capability-triggered, structural]
+  simulate:
+    - stronger-reasoning
+    - longer-horizon-planning
+    - larger-context
+    - persistent-memory
+    - improved-tool-use
+    - increased-code-exploitation-skill
+    - multi-agent-coordination
+    - newly-added-mcp-tools
+    - read-to-write-tool-expansion
+    - local-to-networked-execution
+  require_compositional_authority_check: true
+  require_future_tool-scope-check: true
+  require_upgrade-regression-plan: true
 
 information_diversity:
   enabled: true
@@ -87,6 +102,7 @@ severity:
   levels: [critical, high, medium, low]
   track_exposure_separately: true
   track_triggerability_separately: true
+  track_capability_exposure_separately: true
 
 execution:
   phase0_read_only: true
@@ -107,11 +123,17 @@ pressure:
     - economic
     - scale
     - adversarial
+    - emergent-coordination
+    - future-capability
   test_retry: true
   test_replay: true
   test_duplicate_execution: true
   test_partial_failure: true
   test_restart_recovery: true
+  test_covert_shared_memory: true
+  test_unauthorized_coordination_channels: true
+  test_grader_evidence_tampering: true
+  test_capability_upgrade_without_policy_change: true
 
 closure:
   queue_must_be_empty: true
@@ -119,12 +141,15 @@ closure:
     - entry-points
     - state-and-invariants
     - changed-symbol-consumers
+    - future-capability-envelope
   require_zero_new_findings_each_sweep: true
   require_zero_unexplained_census_gaps: true
   require_zero_introduced_failures: true
   require_authority_corridor_pass: true
   require_receipt_integrity_pass: true
   require_aegis_policy_consistency_pass: true
+  require_future_capability_envelope_pass: true
+  require_assurance_plane_independence_pass: true
   inspect_information_diversity: true
   entropy_is_not_independent_closure_proof: true
 
