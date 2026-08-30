@@ -1,5 +1,5 @@
 sentinel:
-  version: "0.1.0"
+  version: "0.2.0"
   mode: closed-loop
   commander: hermes
   source_of_truth: evidence
@@ -23,6 +23,28 @@ engines:
   closure:
     id: S6
     role: coverage-and-stop-authority
+
+governance:
+  policy_authority: aegis
+  assurance_authority: sentinel-6
+  evidence_ledger: audit-ledger
+  human_authority: mission-control
+  independence:
+    aegis_cannot_suppress_evidence: true
+    sentinel_cannot_grant_authority: true
+    models_cannot_set_policy: true
+    tools_cannot_expand_mandate: true
+  aegis_feedback:
+    enabled: true
+    input: evidence-backed-findings
+    permitted_postures:
+      - allow
+      - observe
+      - restrict
+      - quarantine
+      - require-human-approval
+    automatic_relaxation: false
+    human_override: mission-control
 
 model_policy:
   strategy: differentiated-mandates
@@ -75,6 +97,7 @@ closure:
   require_zero_introduced_failures: true
   require_authority_corridor_pass: true
   require_receipt_integrity_pass: true
+  require_aegis_policy_consistency_pass: true
 
 boundaries:
   deploy: deny
