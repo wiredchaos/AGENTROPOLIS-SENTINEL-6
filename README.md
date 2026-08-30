@@ -10,6 +10,25 @@ SENTINEL-6 audits code, agents, MCPs, authority boundaries, invariants, custody,
 
 SENTINEL-6 does not try to make software look correct. It attempts to falsify correctness until the defined closure gates stop producing new evidence-backed findings.
 
+## Relationship to AEGIS
+
+SENTINEL-6 and AEGIS are governance peers with different responsibilities.
+
+- **AEGIS** defines policy, acceptable risk, quarantine, restriction, and human-approval requirements.
+- **SENTINEL-6** pressure-tests whether code, agents, MCPs, state transitions, receipts, and authority boundaries actually obey those rules.
+- **Audit Ledger** records evidence and receipts.
+- **Mission Control** remains the human escalation and exception authority.
+
+Canonical loop:
+
+```text
+Identity -> Mandate -> AEGIS Policy -> Tool Permission -> Execution -> SENTINEL Pressure -> Receipt -> Audit Ledger -> AEGIS Risk Update
+```
+
+SENTINEL-6 must remain separately auditable from AEGIS. AEGIS may consume SENTINEL evidence and change risk posture, but it may not rewrite or suppress SENTINEL evidence to make policy appear satisfied.
+
+> AEGIS governs what should happen. SENTINEL-6 proves what actually happens.
+
 ## The six engines
 
 | Engine | Responsibility |
@@ -26,7 +45,7 @@ Above them sits **SENTINEL COMMANDER**, the workflow/state orchestrator. Hermes 
 ## Authority corridor
 
 ```text
-Identity -> Mandate -> Policy -> Tool Permission -> Execution -> Pressure -> Receipt -> Audit
+Identity -> Mandate -> AEGIS Policy -> Tool Permission -> Execution -> SENTINEL Pressure -> Receipt -> Audit Ledger
 ```
 
 Pressure tests a boundary. It never grants authority.
@@ -57,6 +76,8 @@ AGENTROPOLIS-SENTINEL-6/
 │   ├── architecture.md
 │   ├── closure-protocol.md
 │   ├── regression-checklist.md
+│   ├── integration-contract.md
+│   ├── aegis-sentinel-contract.md
 │   └── figma-pages-handoff.md
 ├── schemas/
 │   ├── finding.schema.json
@@ -71,9 +92,11 @@ AGENTROPOLIS-SENTINEL-6/
 
 SENTINEL-6 does not autonomously deploy on-chain code, create production infrastructure, expose secrets, delete production data, broaden privileges, or perform irreversible production migrations. Those items are surfaced with evidence and deferred to Mission Control.
 
+AEGIS may tighten execution posture based on SENTINEL findings, but neither AEGIS nor SENTINEL may independently exceed Mission Control's explicit authority.
+
 ## Status
 
-**Foundation phase.** Core contracts, evidence schemas, closure rules, Hermes/MCP orchestration model, and Figma-to-Pages handoff are being established before runtime implementation.
+**Foundation phase.** Core contracts, evidence schemas, closure rules, Hermes/MCP orchestration model, AEGIS governance contract, and Figma-to-Pages handoff are being established before runtime implementation.
 
 ## License
 
