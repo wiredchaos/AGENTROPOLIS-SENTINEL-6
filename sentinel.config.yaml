@@ -1,0 +1,86 @@
+sentinel:
+  version: "0.1.0"
+  mode: closed-loop
+  commander: hermes
+  source_of_truth: evidence
+
+engines:
+  cartographer:
+    id: S1
+    role: system-census
+  conservator:
+    id: S2
+    role: invariant-verification
+  breaker:
+    id: S3
+    role: adversarial-falsification
+  ledger:
+    id: S4
+    role: custody-authority-accounting
+  pressure:
+    id: S5
+    role: concurrency-failure-recovery
+  closure:
+    id: S6
+    role: coverage-and-stop-authority
+
+model_policy:
+  strategy: differentiated-mandates
+  consensus_is_proof: false
+  require_evidence: true
+  allow_hosted_models: true
+  allow_local_models: true
+  allow_static_analyzers: true
+  allow_mcp_tools: true
+  critical_high_cross_review: true
+
+severity:
+  levels: [critical, high, medium, low]
+  track_exposure_separately: true
+  track_triggerability_separately: true
+
+execution:
+  phase0_read_only: true
+  minimum_safe_change: true
+  require_regression_validation: true
+  require_build_when_available: true
+  require_typecheck_when_available: true
+  enumerate_consumers_before_commit: true
+  adversarial_pass_for: [critical, high]
+
+pressure:
+  dimensions:
+    - temporal
+    - concurrency
+    - authority
+    - context
+    - state
+    - economic
+    - scale
+    - adversarial
+  test_retry: true
+  test_replay: true
+  test_duplicate_execution: true
+  test_partial_failure: true
+  test_restart_recovery: true
+
+closure:
+  queue_must_be_empty: true
+  sweeps:
+    - entry-points
+    - state-and-invariants
+    - changed-symbol-consumers
+  require_zero_new_findings_each_sweep: true
+  require_zero_unexplained_census_gaps: true
+  require_zero_introduced_failures: true
+  require_authority_corridor_pass: true
+  require_receipt_integrity_pass: true
+
+boundaries:
+  deploy: deny
+  on_chain_deploy: deny
+  destructive_database_actions: deny
+  secret_file_inspection: deny
+  production_infrastructure_creation: deny
+  privilege_broadening: deny
+  irreversible_migration: deny
