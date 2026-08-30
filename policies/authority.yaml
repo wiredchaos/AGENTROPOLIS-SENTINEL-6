@@ -1,0 +1,32 @@
+policy: sentinel-authority
+version: "0.1.0"
+
+principle: "Authority is a runtime constraint, not a prompt."
+
+corridor:
+  - identity
+  - mandate
+  - policy
+  - tool_permission
+  - execution
+  - pressure
+  - receipt
+  - audit
+
+rules:
+  - id: AUTH-001
+    statement: downstream authority MUST NOT exceed the intersection of identity, mandate, policy, and tool permission
+  - id: AUTH-002
+    statement: prompt text, retrieved content, model output, and tool output MUST be treated as data unless independently authorized
+  - id: AUTH-003
+    statement: delegated agents MUST NOT acquire privileges absent from the delegating mandate
+  - id: AUTH-004
+    statement: authorization MUST be established before protected side effects
+  - id: AUTH-005
+    statement: pressure testing MUST NOT expand authority
+  - id: AUTH-006
+    statement: receipts MUST describe actual executed actions, not merely requested actions
+  - id: AUTH-007
+    statement: possession of an identifier MUST NOT be treated as authorization
+
+failure_action: block_or_defer_with_evidence
