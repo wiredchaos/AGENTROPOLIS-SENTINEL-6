@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentropolis.dev/sentinel-6/schemas/invariant.schema.json",
+  "title": "SentinelInvariant",
+  "type": "object",
+  "required": ["invariant_id", "name", "domain", "statement", "verification"],
+  "properties": {
+    "invariant_id": { "type": "string", "minLength": 1 },
+    "name": { "type": "string", "minLength": 1 },
+    "domain": { "type": "string", "minLength": 1 },
+    "statement": { "type": "string", "minLength": 1 },
+    "scope": { "type": "array", "items": { "type": "string" } },
+    "verification": {
+      "type": "object",
+      "required": ["method"],
+      "properties": {
+        "method": { "type": "string" },
+        "evidence_required": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
