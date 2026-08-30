@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentropolis.dev/sentinel-6/schemas/receipt.schema.json",
+  "title": "SentinelReceipt",
+  "type": "object",
+  "required": ["audit_id", "action", "actor", "timestamp", "evidence"],
+  "properties": {
+    "audit_id": { "type": "string" },
+    "finding_id": { "type": ["string", "null"] },
+    "action": { "type": "string" },
+    "actor": { "type": "string" },
+    "model_or_tool": { "type": ["string", "null"] },
+    "mandate": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "files": { "type": "array", "items": { "type": "string" } },
+    "evidence": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "validation": {
+      "type": "object",
+      "properties": {
+        "typecheck": { "type": "string" },
+        "build": { "type": "string" },
+        "tests": { "type": "string" },
+        "adversarial": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "commit": { "type": ["string", "null"] },
+    "previous_receipt_hash": { "type": ["string", "null"] }
+  },
+  "additionalProperties": false
+}
