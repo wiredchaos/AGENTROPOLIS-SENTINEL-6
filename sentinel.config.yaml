@@ -1,5 +1,5 @@
 sentinel:
-  version: "0.2.0"
+  version: "0.3.0"
   mode: closed-loop
   commander: hermes
   source_of_truth: evidence
@@ -56,6 +56,33 @@ model_policy:
   allow_mcp_tools: true
   critical_high_cross_review: true
 
+information_diversity:
+  enabled: true
+  unit: bits
+  shannon_entropy: true
+  normalized_entropy: true
+  effective_reviewer_count: true
+  mutual_information: true
+  conditional_entropy: true
+  information_gain: true
+  canonicalize_findings_before_scoring: true
+  compare_binary_outcomes_on_same_census_surfaces: true
+  record_per_phase: true
+  record_per_closure_sweep: true
+  low_diversity_action: recommend-different-lens
+  authority_effect: none
+  severity_effect: none
+  aegis_relaxation_effect: none
+  closure_gate_alone: false
+
+cognitive_lenses:
+  - hyperfocus-depth
+  - system-pattern-synthesis
+  - literal-ambiguity
+  - divergent-novel-path
+  - uncertainty-evidence-demand
+  - load-loop-retry-drift-state-collapse
+
 severity:
   levels: [critical, high, medium, low]
   track_exposure_separately: true
@@ -98,6 +125,8 @@ closure:
   require_authority_corridor_pass: true
   require_receipt_integrity_pass: true
   require_aegis_policy_consistency_pass: true
+  inspect_information_diversity: true
+  entropy_is_not_independent_closure_proof: true
 
 boundaries:
   deploy: deny
