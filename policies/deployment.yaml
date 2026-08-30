@@ -1,0 +1,32 @@
+policy: sentinel-deployment
+version: "0.1.0"
+
+default: deny
+
+allowed:
+  - read_repository_source
+  - read_git_history
+  - run_project_native_validation
+  - create_source_patch_when_mandated
+  - create_regression_tests_when_mandated
+  - commit_and_push_when_mandated
+
+requires_explicit_human_mandate:
+  - production_deployment
+  - on_chain_deployment
+  - production_database_migration
+  - credential_rotation
+  - privilege_change
+  - production_infrastructure_creation
+
+forbidden_autonomous_actions:
+  - expose_secrets
+  - inspect_secret_files_to_resolve_unknown_values
+  - delete_production_database
+  - destructive_data_migration
+  - invent_production_credentials
+  - invent_rpc_endpoints
+  - broaden_permissions_to_make_validation_pass
+  - suppress_errors_to_make_ci_green
+
+missing_infrastructure_behavior: deferred_with_reason
